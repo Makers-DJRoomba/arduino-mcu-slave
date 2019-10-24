@@ -9,7 +9,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 	arduino_core_lib
 	)
 
-set(CMAKE_OBJCOPY ${CMAKE_SOURCE_DIR}/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-objcopy)
+set(CMAKE_OBJCOPY arm-none-eabi-objcopy)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 	COMMAND ${CMAKE_OBJCOPY} -O binary ${PROJECT_NAME} ${PROJECT_NAME}.bin

@@ -1,5 +1,9 @@
 # feather-m4-slave
-To setup your environment:
+### DEPENDANCIES:
+- bossac (version 1.9.1) (Atmel SAM chip programmer)
+- arm-none-eabi-gcc (ARM cross compiler)
+
+### To setup your environment:
 ```
 mkdir build
 cd build

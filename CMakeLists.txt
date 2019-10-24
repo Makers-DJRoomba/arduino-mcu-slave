@@ -16,7 +16,7 @@ add_subdirectory(freeRTOS)
 add_subdirectory(samd-core)
 add_subdirectory(apps)
 
-set(PROGRAMMER ${CMAKE_SOURCE_DIR}/tools/bossac/1.8.0-48-gb176eee/bossac)
+set(PROGRAMMER bossac)
 
 add_custom_target(flash
     COMMAND ${PROGRAMMER} -i -d --port=\${PORT} --offset=0x4000 -e -w -v apps/${PROJECT_NAME}.bin -R
