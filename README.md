@@ -1,4 +1,4 @@
-# feather-m4-slave
+# arduino-mcu-slave
 ### DEPENDANCIES:
 - bossac (version 1.9.1) (Atmel SAM chip programmer)
 - arm-none-eabi-gcc (ARM cross compiler)
