@@ -1,4 +1,4 @@
-set(LINKER ${CMAKE_SOURCE_DIR}/samd-core/variants/feather_m4/linker_scripts/gcc/flash_with_bootloader.ld)
+set(LINKER ${CMAKE_SOURCE_DIR}/samd-core/variants/${TARGET_BOARD}/linker_scripts/gcc/flash_with_bootloader.ld)
 
 file(GLOB children RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/*)
 foreach(child ${children})
