@@ -18,7 +18,7 @@
 
 #define ARDUINO_MAIN
 #include "Arduino.h"
-#include <test/blink_test.h>
+#include <test-lib/blink_test.h>
 
 // Weak empty variant initialization function.
 // May be redefined by variant files.
