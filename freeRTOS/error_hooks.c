@@ -1,10 +1,11 @@
 
 #include "error_hooks.h"
+#include "Arduino.h"
 //************************************************************************
 // global variables
 
-//int ErrorLed_Pin     	  =  PA23; //default arduino led pin
-//int ErrorLed_ActiveState  =  false;
+int ErrorLed_Pin     	  =  13; //default arduino led pin
+int ErrorLed_ActiveState  =  false;
 
 //************************************************************************
 
@@ -12,7 +13,7 @@
 void rtosFatalError(void) 
 {
 
-  //Serial.println("Fatal Error");
+  // Serial.println("Fatal Error");
   
   while (1)
   {
@@ -24,7 +25,7 @@ void rtosFatalError(void)
 void vApplicationMallocFailedHook(void) 
 {
 
-  //Serial.println("Malloc Failed");
+  // Serial.println("Malloc Failed");
   
   while (1)
   {
@@ -36,8 +37,8 @@ void vApplicationMallocFailedHook(void)
 void vApplicationStackOverflowHook( TaskHandle_t xTask, char *pcTaskName )
 {
 
-  //Serial.print("Stack Overflow: ");
-  //Serial.println(pcTaskName);
+  // Serial.print("Stack Overflow: ");
+  // Serial.println(pcTaskName);
   
   while (1)
   {
@@ -50,21 +51,21 @@ void vApplicationStackOverflowHook( TaskHandle_t xTask, char *pcTaskName )
 // set the error led to use by the rtos
 void vSetErrorLed(uint8_t pin, uint8_t activeState)
 {
-	//ErrorLed_Pin = pin;
-	//ErrorLed_ActiveState = activeState;
+	ErrorLed_Pin = pin;
+	ErrorLed_ActiveState = activeState;
 }
 
 // blink an error code out the default led when the rtos has crashed
 void errorBlink(int errorNumber)
 {
-  //pinMode(ErrorLed_Pin, OUTPUT); 
+  pinMode(ErrorLed_Pin, OUTPUT); 
   //gpio_set_pin_direction(ErrorLed_Pin, GPIO_DIRECTION_OUT);
 
   for(int x=0; x<errorNumber; ++x)
   {
-    //gpio_set_pin_level(ErrorLed_Pin,  ErrorLed_ActiveState);   
+    digitalWrite(ErrorLed_Pin,  ErrorLed_ActiveState);   
     vNopDelayMS(100);
-    //gpio_set_pin_level(ErrorLed_Pin, !ErrorLed_ActiveState);
+    digitalWrite(ErrorLed_Pin, !ErrorLed_ActiveState);
     vNopDelayMS(100);   
   }
 
