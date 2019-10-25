@@ -8,7 +8,7 @@ if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${child})
 	set_target_properties(${child} PROPERTIES LINK_FLAGS "${MCU_FLAGS} -T${LINKER} -Wl,-Map,${child}.map -Os -Wl,--gc-sections -save-temps -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--warn-section-align")
 
 	target_link_libraries(${child} PRIVATE
-		#custom_lib
+		custom_lib
 		freeRTOS_lib
 		arduino_core_lib
 		)
