@@ -1,12 +1,13 @@
-file(GLOB Library_SOURCES *.c)
-file(GLOB Library_HEADER *.h) 
+file(GLOB_RECURSE Library_C_SOURCES *.c)
+file(GLOB_RECURSE Library_CPP_SOURCES *.cpp)
+file(GLOB_RECURSE Library_HEADER *.h) 
 
 add_library(
-	freeRTOS_lib
-	${Library_SOURCES} ${Library_HEADERS}
+	custom_lib
+	${Library_C_SOURCES} ${Library_CPP_SOURCES} ${Library_HEADER}
 	)
 
-target_include_directories(freeRTOS_lib 
+target_include_directories(custom_lib 
 	PUBLIC ${CMAKE_SOURCE_DIR}/custom-lib
 	PUBLIC ${CMAKE_SOURCE_DIR}/freeRTOS
 	PUBLIC ${CMAKE_SOURCE_DIR}/samd-core/cores/arduino

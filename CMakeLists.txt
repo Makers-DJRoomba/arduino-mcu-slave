@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION "3.10.2")
 
 # change this to the project you're working on
-project("blink")
+project("DJRoomba")
 
 set(VERBOSE)
 
@@ -12,6 +12,7 @@ set(CMAKE_CXX_FLAGS "${MCU_FLAGS} ${CMAKE_BUILD_FLAGS} -std=gnu++11 -fno-threads
 
 add_definitions(-DF_CPU=120000000L -DARDUINO=10810 -DARDUINO_FEATHER_M4 -DARDUINO_ARCH_SAMD -D__SAMD51J19A__ -DADAFRUIT_FEATHER_M4_EXPRESS -D__SAMD51__ -DUSB_VID=0x239A -DUSB_PID=0x8022 -DUSBCON -DUSB_CONFIG_POWER=100 "-DUSB_MANUFACTURER=\"Adafruit LLC\"" "-DUSB_PRODUCT=\"Adafruit Feather M4\"" -D__FPU_PRESENT -DARM_MATH_CM4 -DENABLE_CACHE -DVARIANT_QSPI_BAUD_DEFAULT=50000000)
 
+add_subdirectory(custom-lib)
 add_subdirectory(freeRTOS)
 add_subdirectory(samd-core)
 add_subdirectory(apps)
@@ -19,6 +20,8 @@ add_subdirectory(apps)
 set(PROGRAMMER bossac)
 
 add_custom_target(flash
-    COMMAND ${PROGRAMMER} -i -d --port=\${PORT} --offset=0x4000 -e -w -v apps/${PROJECT_NAME}.bin -R
-    DEPENDS build/apps/${PROJECT_NAME}.bin
+    COMMAND ${PROGRAMMER} -i -d --port=\${PORT} --offset=0x4000 -e -w -v apps/\${APP}.bin -R
+    DEPENDS build/apps/${APP}
 )
+
+

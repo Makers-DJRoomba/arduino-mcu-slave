@@ -26,6 +26,7 @@ add_library(
 	)
 
 target_include_directories(arduino_core_lib 
+	PUBLIC ${CMAKE_SOURCE_DIR}/custom-lib
 	PUBLIC ${CMAKE_SOURCE_DIR}/freeRTOS
 	PUBLIC ${CMAKE_SOURCE_DIR}/samd-core/cores/arduino
 	PUBLIC ${CMAKE_SOURCE_DIR}/samd-core/cores/arduino/Adafruit_TinyUSB_Core
