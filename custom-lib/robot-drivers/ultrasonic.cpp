@@ -5,6 +5,6 @@ UltrasonicRanger::UltrasonicRanger(const int pin) {
   // implement here
 }
 
-int UltrasonicRanger::getRangerVal() {
+int UltrasonicRanger::getDistance() {
   // read value, might not be int
 }
