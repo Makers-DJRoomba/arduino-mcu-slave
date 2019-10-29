@@ -3,26 +3,24 @@
 
 MotorDriver::MotorDriver(const int motorA_In1, const int motorA_In2, 
                          const int motorB_In3, const int motorB_In4, 
-                         int baseSpeed) {
+                         int baseDutyCycle) {
   // implement here
 }
 
-void MotorDriver::driveMotorA(const int motorA_In1, const int motorA_In2, int speed) {
+void MotorDriver::driveMotorA(int percentDutyCycle) {
   // implement here
 }
 
-void MotorDriver::driveMotorA(const int motorA_In1, const int motorA_In2) {
+// runs using baseDutyCycle
+void MotorDriver::driveMotorA() {
   // implement here
 }
 
-void MotorDriver::driveMotorB(const int motorB_In3, const int motorB_In4, int speed) {
+void MotorDriver::driveMotorB(int percentDutyCycle) {
   // implement here
 }
 
-void MotorDriver::driveMotorB(const int motorB_In3, const int motorB_In4) {
+// runs using baseDutyCycle
+void MotorDriver::driveMotorB() {
   // implement here
-}
-
-int MotorDriver::speedToAnalogVal(int speed) {
-  // convert speed to 0-255 value to analogWriteVal
 }
