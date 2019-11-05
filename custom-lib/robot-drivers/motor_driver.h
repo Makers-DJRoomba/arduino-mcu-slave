@@ -27,6 +27,6 @@ class MotorDriver {
     int motorB_dutyCycle;
 
     // add any other variables/helper functions you may need
-}
+};
 
 #endif

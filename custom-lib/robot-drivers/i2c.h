@@ -16,6 +16,6 @@ class I2C {
 
   private:
     // helper functions/variables if necessary
-}
+};
 
 #endif

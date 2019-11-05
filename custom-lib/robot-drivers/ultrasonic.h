@@ -8,6 +8,6 @@ class UltrasonicRanger {
 
   private:
     // helper functions/variables if necessary
-}
+};
 
 #endif

@@ -9,6 +9,6 @@ class Encoder {
 
   private:
     // helper functions/variables if necessary
-}
+};
 
 #endif

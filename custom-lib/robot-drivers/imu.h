@@ -8,6 +8,6 @@ class IMU {
 
   private:
     // helper functions/variables if necessary
-}
+};
 
 #endif
