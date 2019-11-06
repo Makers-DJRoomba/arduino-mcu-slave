@@ -4,12 +4,15 @@
 /* Rotary Encoders */
 class Encoder {
   public:
-    Encoder(const int pin); 
-    int getEncoderVal();
+    Encoder(const int pin);
+    ~Encoder(); 
+    int getValue();
 
   private:
-    // helper functions/variables if necessary
-    int _revolutions = 0;
+    static void increment();
+    static int _ticks = 0;
+    static TaskHandle_t increment_Task;
+    SemaphoreHandle_t tick_Semaphore = NULL;
 };
 
 #endif
