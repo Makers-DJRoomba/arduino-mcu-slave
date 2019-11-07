@@ -9,9 +9,10 @@ class Encoder {
     float getSpeed();
 
   private:
-    static void timePerTick();
-    static unsigned long _time;
-    static unsigned long _old_time;
+    static void countTick();
+    static int _ticks = 0;
+    int _old_ticks = 0;
+    unsigned long _old_time;
     const int _pin;
   };
 
