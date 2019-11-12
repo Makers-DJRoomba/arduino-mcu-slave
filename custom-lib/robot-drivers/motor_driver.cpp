@@ -14,58 +14,58 @@ MotorDriver::MotorDriver(const int in1, const int in2, const int in3, const int 
 }
 
 void MotorDriver::driveMotorA(int percent_duty_cycle) {
-	int actual_PWM = toAnalogValue(percent_duty_cycle);
-	
-  if (percent_duty_cycle < 0) {						 // If value is given then we move backward
-		motorAbackward();
-	  analogWrite(_motorA_EN, -actual_PWM);  // Send PWM signal to motor A
-	}
-	else {											             // otherwise move forward
-		motorAforward();
+  int actual_PWM = toAnalogValue(percent_duty_cycle);
+  
+  if (percent_duty_cycle < 0) {            // If value is given then we move backward
+    motorAbackward();
+    analogWrite(_motorA_EN, -actual_PWM);  // Send PWM signal to motor A
+  }
+  else {                                   // otherwise move forward
+    motorAforward();
     analogWrite(_motorA_EN, actual_PWM);   // Send PWM signal to motor A
-	}
+  }
 }
 
 // runs using _base_duty_cycle
 void MotorDriver::driveMotorA() {
   int actual_PWM = toAnalogValue(_base_duty_cycle);
-	
-  if (_base_duty_cycle < 0) {						   // If value is given then we move backward
-		actual_PWM = -actual_PWM;
-		motorAbackward();
-	  analogWrite(_motorA_EN, -actual_PWM);  // Send PWM signal to motor A
-	}
-	else {											             // otherwise move forward
-		motorAforward();
-	  analogWrite(_motorA_EN, actual_PWM);   // Send PWM signal to motor A
-	}
+  
+  if (_base_duty_cycle < 0) {              // If value is given then we move backward
+    actual_PWM = -actual_PWM;
+    motorAbackward();
+    analogWrite(_motorA_EN, -actual_PWM);  // Send PWM signal to motor A
+  }
+  else {                                   // otherwise move forward
+    motorAforward();
+    analogWrite(_motorA_EN, actual_PWM);   // Send PWM signal to motor A
+  }
 }
 
 void MotorDriver::driveMotorB(int percent_duty_cycle) {
   int actual_PWM = toAnalogValue(percent_duty_cycle);
-	
-  if (percent_duty_cycle < 0) {						 // If value is given then we move backward
+  
+  if (percent_duty_cycle < 0) {            // If value is given then we move backward
     motorBbackward();
     analogWrite(_motorB_EN, -actual_PWM);  // Send PWM signal to motor B
-	}
-	else {											             // otherwise move forward
+  }
+  else {                                   // otherwise move forward
     motorBforward();
     analogWrite(_motorB_EN, actual_PWM);   // Send PWM signal to motor B
-	}
+  }
 }
 
 // runs using _base_duty_cycle
 void MotorDriver::driveMotorB() {
   int actual_PWM = toAnalogValue(_base_duty_cycle);
 
-	if (_base_duty_cycle < 0) {						   // If value is given then we move backward
+  if (_base_duty_cycle < 0) {              // If value is given then we move backward
     motorBbackward();
     analogWrite(_motorB_EN, -actual_PWM);  // Send PWM signal to motor B
-	}
-	else {											             // otherwise move forward
+  }
+  else {                                   // otherwise move forward
     motorBforward();
     analogWrite(_motorB_EN, actual_PWM);   // Send PWM signal to motor B
-	}
+  }
 }
 
 int MotorDriver::toAnalogValue(int percent_duty_cycle) {
