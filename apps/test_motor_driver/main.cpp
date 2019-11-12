@@ -49,7 +49,7 @@ int main( void )
 #endif
 
   //setup();
-  MotorDriver md = MotorDriver(9,10,11,12,0)
+  MotorDriver md = MotorDriver(9,10,11,12,7,8,0); // check these pins before testing 
 
   for (;;)
   {
