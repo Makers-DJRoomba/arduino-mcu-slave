@@ -6,13 +6,12 @@ class Encoder {
   public:
     Encoder(const int pin);
     ~Encoder(); 
-    float getSpeed();
+    float updateSpeed();
 
   private:
-    static void countTick();
-    static int _ticks = 0;
-    int _old_ticks = 0;
-    unsigned long _old_time;
+    static void updateTickDiff()
+    portTickType _last_tick;
+    portTickType _tick_diff;
     const int _pin;
   };
 
