@@ -5,7 +5,7 @@
 
 #include <cmath>
 
-const int SlitsPerRevolution = 20;
+const int SlitsPerRev = 20;
 const float WheelDiameterM   = 0.0693f;   // meters
 const float WheelDistanceM   = 0.12035f;  // meters
 const float DistancePerSlit = (M_PI * WheelDiameterM)/SlitsPerRev;
