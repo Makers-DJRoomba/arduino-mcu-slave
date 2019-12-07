@@ -5,8 +5,14 @@
 // https://www.electroschematics.com/arduino-optical-position-rotary-encoder/
 // http://www.ekt2.com/pdf/412_CH_SMART_SHAFT_ENCODER_KIT.pdf
 
+typedef void (*DiffFuncPtr)();
+typedef void (*TimeFuncPtr)(void *);
 Encoder::Encoder(const int pin)
   : _pin(pin), _last_tick(xTaskGetTickCount()) {
+
+  auto cbTimeOut  = [this](){ cbEncoderTimeOut(this); };
+  auto cbTickDiff = [this](){ cbUpdateTickDiff(this); };
+
   _encoderTimer = xTimerCreate ( /* Just a text name, not used by the RTOS
                      kernel. */
                      "Timer",
@@ -22,12 +28,12 @@ Encoder::Encoder(const int pin)
                      ( void * ) 0,
                      /* Each timer calls the same callback when
                      it expires. */
-                     [this](){ cbEncoderTimeOut(this);}
+                     (TimeFuncPtr)&cbTimeOut
                    );
 
   pinMode(_pin, INPUT);
 
-  attachInterrupt(_pin, [this](){ cbUpdateTickDiff(this);}, RISING);
+  attachInterrupt(_pin, (DiffFuncPtr)&cbTickDiff, RISING);
   xTimerStart(_encoderTimer, 10);  
 }
 
