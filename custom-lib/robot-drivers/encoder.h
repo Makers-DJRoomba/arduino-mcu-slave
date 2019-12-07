@@ -1,5 +1,6 @@
 #ifndef ENCODER_H
 #define ENCODER_H
+#include <FreeRTOS_SAMD21.h>
 
 /* Rotary Encoders */
 class Encoder {
@@ -7,13 +8,17 @@ class Encoder {
     Encoder(const int pin);
     ~Encoder(); 
     float getSpeed();
+    void _updateTickDiff();
+    void _encoderTimeOut();
 
   private:
-    static void countTick();
-    static int _ticks = 0;
-    int _old_ticks = 0;
-    unsigned long _old_time;
+    TimerHandle_t _encoderTimer;
+    portTickType _last_tick;
+    portTickType _tick_diff;
     const int _pin;
   };
+
+static void cbUpdateTickDiff(Encoder* srcEncoder);
+static void cbEncoderTimeOut(Encoder* srcEncoder);
 
 #endif

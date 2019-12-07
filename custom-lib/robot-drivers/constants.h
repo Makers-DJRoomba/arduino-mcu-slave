@@ -5,9 +5,9 @@
 
 #include <cmath>
 
-const int TicksPerRev        = 20;
+const int SlitsPerRev = 20;
 const float WheelDiameterM   = 0.0693f;   // meters
 const float WheelDistanceM   = 0.12035f;  // meters
-const float DistancePerClick = (M_PI * WheelDiameter)/TicksPerRev;
+const float DistancePerSlit = (M_PI * WheelDiameterM)/SlitsPerRev;
 
 #endif

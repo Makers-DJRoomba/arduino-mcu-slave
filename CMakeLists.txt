@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION "3.10.2")
 
 # change this to the project you're working on
 project("DJRoomba")
-set(TARGET_BOARD feather_m0)
+set(TARGET_BOARD feather_m4)
 
 set(VERBOSE)
 
