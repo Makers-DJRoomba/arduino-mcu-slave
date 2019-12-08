@@ -20,6 +20,7 @@
 #include "Arduino.h"
 #include <string.h>
 #include <test-lib/blink_test.h>
+#include <robot-drivers/serial_talker.h>
 
 // Weak empty variant initialization function.
 // May be redefined by variant files.
@@ -49,20 +50,31 @@ int main( void )
   USBDevice.attach();
 #endif
 
+  // SerialTalker me(9600);
   Serial.begin(9600);
-  pinMode(13, OUTPUT);
+  char recv_buf[1024];
   //setup();
+
+  // 0 = stop
+  // 1 = left
+  // 2 = right
+  // 3 = forward
+  // 4 = backward
 
   for (;;)
   {
-    // Serial.println("swag money boiiiiii");
 
     if (Serial.available() > 0) {
       int data = Serial.read();
-
+      
+      while (data != '\n') {}
+        data = Serial.read();
       Serial.println(data, DEC);
       // Serial.println("yum yum data taste good. I read ur bad code. Fuck haha profanity");
     }
+
+    // me.read(recv_buf);
+    // me.send(recv_buf[0] - '0');
 
     delay(1000);
 
