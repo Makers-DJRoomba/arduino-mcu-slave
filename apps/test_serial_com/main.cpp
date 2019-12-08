@@ -21,6 +21,7 @@
 #include <string.h>
 #include <test-lib/blink_test.h>
 #include <robot-drivers/serial_talker.h>
+#include <robot-drivers/motor_driver.h>
 
 // Weak empty variant initialization function.
 // May be redefined by variant files.
@@ -51,8 +52,14 @@ int main( void )
 #endif
 
   // SerialTalker me(9600);
+
+  // in1, in2, in3, in4, enA, enB, duty cycle
+  MotorDriver md = MotorDriver(11, 10, 9, 6, 12, 5, 100);
   Serial.begin(9600);
-  char recv_buf[1024];
+
+  // make it go forward
+  digitalWrite(11, LOW);
+  digitalWrite(10, HIGH);
   //setup();
 
   // 0 = stop
@@ -61,17 +68,57 @@ int main( void )
   // 3 = forward
   // 4 = backward
 
+
+  // MotorA = right, MotorB = left
+  // right motor is flipped
+
   for (;;)
   {
 
     if (Serial.available() > 0) {
-      int data = Serial.read();
-      
-      while (data != '\n') {}
-        data = Serial.read();
-      Serial.println(data, DEC);
-      // Serial.println("yum yum data taste good. I read ur bad code. Fuck haha profanity");
+      char data = Serial.read();
+
+      int cmd = data - '0';
+      switch (cmd) {
+        case 0:
+          // stop
+          md.driveMotorA(0);
+          md.driveMotorB(0);
+          break;
+
+        case 1:
+          // left
+          md.driveMotorA(100);
+          md.driveMotorB(0);
+          break;
+
+        case 2:
+          // right
+          md.driveMotorA(0);
+          md.driveMotorB(100);
+          break;
+
+        case 3:
+          // forward
+          md.driveMotorA(100);
+          md.driveMotorB(100);
+          break;
+
+        case 4:
+          // backward
+          md.driveMotorA(-100);
+          md.driveMotorB(-100);
+          break;
+      }
+
+      Serial.println(data);
     }
+    // analogWrite(12, 255);
+
+    // md.driveMotorA(100);
+    // md.driveMotorB(100);
+
+    // Serial.println("yum yum data taste good. I read ur bad code. Fuck haha profanity");
 
     // me.read(recv_buf);
     // me.send(recv_buf[0] - '0');

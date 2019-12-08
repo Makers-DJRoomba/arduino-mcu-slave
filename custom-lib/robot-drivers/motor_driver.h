@@ -6,8 +6,8 @@
  */
 class MotorDriver {
   public:
-    MotorDriver(const int in1, const int in2, const int in3, const int in4, 
-                const int enA, const int enB, int duty_cycle=0);
+    MotorDriver(int in1, int in2, int in3, int in4, 
+                int enA, int enB, int duty_cycle=0);
     void driveMotorA(int percent_duty_cycle);
     void driveMotorA();
     void driveMotorB(int percent_duty_cycle);
