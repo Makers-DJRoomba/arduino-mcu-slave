@@ -51,8 +51,6 @@ int main( void )
   USBDevice.attach();
 #endif
 
-  // SerialTalker me(9600);
-
   // in1, in2, in3, in4, enA, enB, duty cycle
   MotorDriver md = MotorDriver(11, 10, 9, 6, 12, 5, 100);
   Serial.begin(9600);
@@ -113,17 +111,6 @@ int main( void )
 
       Serial.println(data);
     }
-    // analogWrite(12, 255);
-
-    // md.driveMotorA(100);
-    // md.driveMotorB(100);
-
-    // Serial.println("yum yum data taste good. I read ur bad code. Fuck haha profanity");
-
-    // me.read(recv_buf);
-    // me.send(recv_buf[0] - '0');
-
-    delay(1000);
 
     yield(); // yield run usb background task
 
