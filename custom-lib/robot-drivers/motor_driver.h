@@ -14,14 +14,12 @@ class MotorDriver {
     void driveMotorB();
 
   private:
-    // Pins: can later define as macros once we know what the feather m4 pinouts will be
     const int _motorA_EN;
     const int _motorB_EN;
     const int _motorA_in1;
     const int _motorA_in2;
     const int _motorB_in3;
     const int _motorB_in4;
-
     int _base_duty_cycle;
 
     int toAnalogValue(int percent_duty_cycle);
