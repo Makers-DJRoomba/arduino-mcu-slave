@@ -6,7 +6,7 @@ class SerialTalker {
     SerialTalker(int baud_rate);
     ~SerialTalker();
     template<typename T> std::size_t send(T data);
-    std::size_t read(char* buf, int len);
+    int readInt(char* buf, int len);
 };
 
 template<typename T>
