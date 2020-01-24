@@ -49,7 +49,8 @@ int main( void )
 
   // in1, in2, in3, in4, enA, enB, duty cycle
   MotorDriver md = MotorDriver(11, 10, 9, 6, 12, 5, 100);
-  SerialTalker st(9600);
+  // SerialTalker st(9600);
+  Serial.begin(9600);
   //setup();
 
   // 0 = stop
@@ -62,11 +63,38 @@ int main( void )
 
   char buf[3] = {' ',' ',' '};
 
+
+  int integerValue=0;
+  bool negativeNumber=false; // track if number is negative
+  char incomingByte;
+
   for (;;)
   {
-    int cmd = st.readInt(buf, 3);
+    // std::size_t bytes_read = st.readInt(buf, 3);
 
-    st.send(cmd);
+    // int cmd = atoi(buf);
+
+    if (Serial.available() > 0) {   // something came across serial
+      integerValue = 0;         // throw away previous integerValue
+      negativeNumber = false;  // reset for negative
+      while(1) {            // force into a loop until 'n' is received
+        incomingByte = Serial.read();
+        if (incomingByte == '\n') break;   // exit the while(1), we're done receiving
+        if (incomingByte == -1) continue;  // if no characters are in the buffer read() returns -1
+        if (incomingByte == '-') {
+          negativeNumber=true;
+          continue;
+        }
+        integerValue *= 10;  // shift left 1 decimal place
+        // convert ASCII to integer, add, and shift left 1 decimal place
+        integerValue = ((incomingByte - 48) + integerValue);
+      }
+      if (negativeNumber)
+        integerValue = -integerValue;
+      Serial.println(integerValue);   // Do something with the value
+    }
+
+    // st.send(buf);
 
     yield(); // yield run usb background task
 
