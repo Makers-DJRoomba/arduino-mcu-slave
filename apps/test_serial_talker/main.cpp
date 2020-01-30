@@ -15,9 +15,8 @@
 
 #define ARDUINO_MAIN
 #include "Arduino.h"
-#include <string.h>
-#include <test-lib/blink_test.h>
 #include <robot-drivers/robot_drivers.h>
+#include <cstring>
 
 // Weak empty variant initialization function.
 // May be redefined by variant files.
@@ -47,54 +46,39 @@ int main( void )
   USBDevice.attach();
 #endif
 
-  // in1, in2, in3, in4, enA, enB, duty cycle
-  MotorDriver md = MotorDriver(11, 10, 9, 6, 12, 5, 100);
-  // SerialTalker st(9600);
-  Serial.begin(9600);
   //setup();
+
+  // MotorA = right, MotorB = left
+  // note: right motor wiring is flipped
+  // format: in1, in2, in3, in4, enA, enB, base duty cycle
+  MotorDriver md = MotorDriver(11, 10, 9, 6, 12, 5, 100);
+  SerialTalker st(9600);
+  // Serial.begin(9600);
 
   // 0 = stop
   // 1 = left
   // 2 = right
   // 3 = forward
   // 4 = backward
-  // MotorA = right, MotorB = left
-  // note: right motor wiring is flipped
-
-  char buf[3] = {' ',' ',' '};
-
 
   int integerValue=0;
   bool negativeNumber=false; // track if number is negative
   char incomingByte;
 
+  std::pair<int, int> numbers;
+  char num1[5];
+  char num2[5];
+
   for (;;)
   {
-    // std::size_t bytes_read = st.readInt(buf, 3);
-
-    // int cmd = atoi(buf);
-
-    if (Serial.available() > 0) {   // something came across serial
-      integerValue = 0;         // throw away previous integerValue
-      negativeNumber = false;  // reset for negative
-      while(1) {            // force into a loop until 'n' is received
-        incomingByte = Serial.read();
-        if (incomingByte == '\n') break;   // exit the while(1), we're done receiving
-        if (incomingByte == -1) continue;  // if no characters are in the buffer read() returns -1
-        if (incomingByte == '-') {
-          negativeNumber=true;
-          continue;
-        }
-        integerValue *= 10;  // shift left 1 decimal place
-        // convert ASCII to integer, add, and shift left 1 decimal place
-        integerValue = ((incomingByte - 48) + integerValue);
-      }
-      if (negativeNumber)
-        integerValue = -integerValue;
-      Serial.println(integerValue);   // Do something with the value
+    if (st.available() > 0) {
+      numbers = st.readMotorSpeeds();
+      itoa(numbers.first, num1, 10);
+      itoa(numbers.second, num2, 10);
+      strcat(num1, ",");
+      strcat(num1, num2);
+      st.write(num1);
     }
-
-    // st.send(buf);
 
     yield(); // yield run usb background task
 

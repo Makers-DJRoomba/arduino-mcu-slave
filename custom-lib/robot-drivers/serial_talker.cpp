@@ -5,19 +5,43 @@
 SerialTalker::SerialTalker(int baud_rate) { Serial.begin(baud_rate); }
 SerialTalker::~SerialTalker() { Serial.end(); }
 
-int SerialTalker::readInt(char* buf, int len) {
-  int sign = 1;
-  char first_byte;
+std::size_t SerialTalker::available() { return Serial.available(); }
 
-  while (!Serial.available()) {} // wait to receive data
+std::pair<int, int> SerialTalker::readMotorSpeeds() {
+  int final_int  = 0;
+  int first_int  = 0; 
+  int second_int = 0;
+  bool negative  = false;
+  char recvd_byte;
 
-  first_byte = Serial.read();
-  if (first_byte == -1)
-    return -1;
-  else if (first_byte == '-')
-    sign = -1;
+  // loop until '\n' is received
+  while(1) {
+    recvd_byte = Serial.read();
 
-  std::size_t bytes_read = Serial.readBytesUntil('\n', buf, len);
+    if (recvd_byte == -1) continue;  // if no characters are in the buffer read() returns -1
+    if (recvd_byte == '\n') {        // done receiving all ints, exit while loop
+      if (negative)
+        final_int = -final_int;
+      second_int = final_int;
+      break;
+    }
+    if (recvd_byte == '-') {
+      negative = true;
+      continue;
+    }
+    if (recvd_byte == ',') {         // finished receiving first int in message
+      if (negative)
+        final_int = -final_int;
+      first_int = final_int;
+      final_int = 0;
+      negative  = false;
+      continue;
+    }
+    final_int *= 10;  // shift left 1 decimal place
 
-  return sign*atoi(buf);
+    // convert from ASCII to integer, add, and shift left 1 decimal place
+    final_int = ((recvd_byte - 48) + final_int);
+  }
+
+  return std::make_pair(first_int, second_int);
 }
