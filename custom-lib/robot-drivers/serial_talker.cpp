@@ -7,6 +7,17 @@ SerialTalker::~SerialTalker() { Serial.end(); }
 
 std::size_t SerialTalker::available() { return Serial.available(); }
 
+/* Receives serial data in the following format:
+ * 
+ *            "int1,int2\n"
+ *
+ * Will terminate read once the '\n' character has been found. 
+ * Int pair is separated by a comma and may be positive or negative. 
+ * 
+ * Returns a std::pair object where both elements are ints.
+ * pair.first  = left wheel speed
+ * pair.second = right wheel speed
+ */
 std::pair<int, int> SerialTalker::readMotorSpeeds() {
   int final_int  = 0;
   int first_int  = 0; 

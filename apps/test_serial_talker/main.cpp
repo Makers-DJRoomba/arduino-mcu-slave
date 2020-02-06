@@ -53,17 +53,12 @@ int main( void )
   // format: in1, in2, in3, in4, enA, enB, base duty cycle
   MotorDriver md = MotorDriver(11, 10, 9, 6, 12, 5, 100);
   SerialTalker st(9600);
-  // Serial.begin(9600);
 
   // 0 = stop
   // 1 = left
   // 2 = right
   // 3 = forward
   // 4 = backward
-
-  int integerValue=0;
-  bool negativeNumber=false; // track if number is negative
-  char incomingByte;
 
   std::pair<int, int> numbers;
   char num1[5];
