@@ -1,5 +1,5 @@
-#ifndef MOTORDRIVER_H
-#define MOTORDRIVER_H
+#ifndef MOTOR_DRIVER_H
+#define MOTOR_DRIVER_H
 
 /* L298N Motor Driver 
  * Specifically used for driving 2 motors and not just one.
@@ -29,4 +29,4 @@ class MotorDriver {
     void motorBbackward();
 };
 
-#endif
+#endif // MOTOR_DRIVER_H
