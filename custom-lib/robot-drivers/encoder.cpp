@@ -21,7 +21,6 @@ void cbEncoderTimeOut(TimerHandle_t timerHandle){
 
 // https://www.electroschematics.com/arduino-optical-position-rotary-encoder/
 // http://www.ekt2.com/pdf/412_CH_SMART_SHAFT_ENCODER_KIT.pdf
-
 Encoder::Encoder(const int pin)
   : _pin(pin), _last_tick(xTaskGetTickCount()) {
 
@@ -30,7 +29,7 @@ Encoder::Encoder(const int pin)
                      "Timer",
                      /* The timer period in ticks, must be
                      greater than 0. */
-                     0.3 * configTICK_RATE_HZ,
+                     0.1 * configTICK_RATE_HZ,
                      /* The timer will auto-reload themselves
                      when they expire. */
                      pdTRUE,
@@ -73,7 +72,7 @@ TickType_t Encoder::getTickDiff() {
 }
 
 float Encoder::getSpeed() {
-  float time_elapsed = ((float)_tick_diff) / configTICK_RATE_HZ; // seconds per slit
+  float time_elapsed = ((float)_tick_diff) / ((float)configTICK_RATE_HZ); // seconds per slit
 
   // formula = (NumTicks*DistancePerClick)/elapsed_time
   // units: (tick distance)/s
@@ -84,15 +83,22 @@ float Encoder::getSpeed() {
 }
 
 void Encoder::_updateTickDiff() {
-  xTimerReset(_timerHandle, 0);
+  BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+  time_out_counter = 0;
   portTickType new_tick = xTaskGetTickCountFromISR();
   _tick_diff = new_tick - _last_tick;
   _last_tick = new_tick;
+  if (xHigherPriorityTaskWoken != pdFALSE)
+    portEND_SWITCHING_ISR(xHigherPriorityTaskWoken);
 }
 
 void Encoder::_encoderTimeOut(){
-  _tick_diff = 0;
-  _last_tick = xTaskGetTickCountFromISR();
+  time_out_counter++;
+  if(time_out_counter == 2){
+    time_out_counter = 0;
+    _tick_diff = 0;
+    _last_tick = xTaskGetTickCountFromISR();
+  }
 }
 
 void Encoder::registerTimerHandle(TimerHandle_t handle){

@@ -19,6 +19,7 @@
 #define ARDUINO_MAIN
 #include "Arduino.h"
 #include <robot-drivers/encoder.h>
+#include <robot-drivers/constants.h>
 #include <test-lib/blink_test.h>
 #include <FreeRTOS_SAMD21.h> //samd21
 
@@ -38,7 +39,6 @@ static void threadA( void *pvParameters )
   portTickType tick_diff = 0;
   pinMode(13, OUTPUT);
   float speed = 0;
-  // delete ourselves.
   Serial.println("Thread A: STARTING");
   for(;;){
     //loop();
@@ -46,11 +46,8 @@ static void threadA( void *pvParameters )
     vTaskDelay(500);
     digitalWrite(13, LOW);
     vTaskDelay(500);
-    tick_diff = encoder->getTickDiff();
-    // speed = encoder->getSpeed();
-    //if (serialEventRun) serialEventRun();
-    yield(); // yield run usb background task
-    if (serialEventRun) serialEventRun();
+    speed = encoder->getSpeed();
+    Serial.println(speed);
   }
 }
   
@@ -88,7 +85,7 @@ int main( void )
   Serial.println("******************************");
   Serial.println("        Program start         ");
   Serial.println("******************************");
-  xTaskCreate(threadA,     "Task A",       512, (void *) &encoder, tskIDLE_PRIORITY + 1, &Handle_aTask);
+  xTaskCreate(threadA,     "Task A",       1024, (void *) &encoder, tskIDLE_PRIORITY + 1, &Handle_aTask);
   Serial.println("Starting task scheduler");
   vTaskStartScheduler();
   for (;;);

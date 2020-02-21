@@ -8,7 +8,6 @@
 
 /* Rotary Encoders */
 class Encoder {
-
   public:
     Encoder(const int pin);
     ~Encoder(); 
@@ -22,11 +21,13 @@ class Encoder {
     uint32_t getPinIntHandle();
     TimerHandle_t getTimerHandle();
     TickType_t getTickDiff();
+
   private:
     portTickType _last_tick = 0;
     portTickType _tick_diff = 0;
     TimerHandle_t _timerHandle;
     uint32_t _pinIntHandle;
+    int time_out_counter = 0;
     const int _pin;
   };
 
@@ -36,4 +37,4 @@ static std::unordered_map<uint32_t, Encoder*> pinHandleRegister;
 void cbUpdateTickDiff(uint32_t pinHandle);
 void cbEncoderTimeOut(TimerHandle_t timerHandle);
 
-#endif
+#endif // ENCODER_H
