@@ -34,18 +34,18 @@ extern "C" {
 #define DEFAULT 1
 #define EXTERNAL 0
 
-typedef void (*voidFuncPtr)(void);
+typedef void (*voidFuncPtr)(uint32_t);
 
 /*
  * \brief Specifies a named Interrupt Service Routine (ISR) to call when an interrupt occurs.
  *        Replaces any previous function that was attached to the interrupt.
  */
-void attachInterrupt(uint32_t pin, voidFuncPtr callback, uint32_t mode);
+uint32_t attachInterrupt(uint32_t pin, voidFuncPtr callback, uint32_t mode);
 
 /*
  * \brief Turns off the given interrupt.
  */
-void detachInterrupt(uint32_t pin);
+uint32_t detachInterrupt(uint32_t pin);
 
 #ifdef __cplusplus
 }

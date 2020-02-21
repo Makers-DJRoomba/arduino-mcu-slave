@@ -76,7 +76,7 @@ static void __initialize()
  * \brief Specifies a named Interrupt Service Routine (ISR) to call when an interrupt occurs.
  *        Replaces any previous function that was attached to the interrupt.
  */
-void attachInterrupt(uint32_t pin, voidFuncPtr callback, uint32_t mode)
+uint32_t attachInterrupt(uint32_t pin, voidFuncPtr callback, uint32_t mode)
 {
 	static int enabled = 0;
 	uint32_t config;
@@ -100,6 +100,10 @@ void attachInterrupt(uint32_t pin, voidFuncPtr callback, uint32_t mode)
 	#else
 	EIC->WAKEUP.reg |= (1 << in);
 	#endif
+
+	// Store interrupts to service in order of when they were attached
+	// to allow for first come first serve handler
+	uint32_t current = 0;
 
 	// Only store when there is really an ISR to call.
 	// This allow for calling attachInterrupt(pin, NULL, mode), we set up all needed register
@@ -137,10 +141,6 @@ void attachInterrupt(uint32_t pin, voidFuncPtr callback, uint32_t mode)
 
 			// Assign pin to EIC
 			pinPeripheral(pin, PIO_EXTINT);
-
-			// Store interrupts to service in order of when they were attached
-			// to allow for first come first serve handler
-			uint32_t current = 0;
 
 			// Check if we already have this interrupt
 			for (current=0; current<nints; current++) {
@@ -201,12 +201,13 @@ void attachInterrupt(uint32_t pin, voidFuncPtr callback, uint32_t mode)
 	EIC->CTRLA.bit.ENABLE = 1;
 	while (EIC->SYNCBUSY.bit.ENABLE == 1) { }
 	#endif
+	return current;
 }
 
 /*
  * \brief Turns off the given interrupt.
  */
-void detachInterrupt(uint32_t pin)
+uint32_t detachInterrupt(uint32_t pin)
 {
 #if (ARDUINO_SAMD_VARIANT_COMPLIANCE >= 10606)
   EExt_Interrupts in = g_APinDescription[pin].ulExtInt;
@@ -244,13 +245,14 @@ void detachInterrupt(uint32_t pin)
     ISRcallback[current] = ISRcallback[current+1];
   }
   nints--;
+  return current;
 }
 
 /*
  * External Interrupt Controller NVIC Interrupt Handler
  */
 #if defined(__SAMD51__)
-void InterruptHandler(uint32_t i)
+void InterruptHandler()
 {
   // Calling the routine directly from -here- takes about 1us
   // Depending on where you are in the list it will take longer
@@ -261,7 +263,7 @@ void InterruptHandler(uint32_t i)
 	if ((EIC->INTFLAG.reg & ISRlist[i]) != 0)
 	{
 	  // Call the callback function
-	  ISRcallback[i]();
+	  ISRcallback[i](i);
 	  // Clear the interrupt
 	  EIC->INTFLAG.reg = ISRlist[i];
 	}
@@ -360,7 +362,7 @@ void EIC_Handler(void)
     if ((EIC->INTFLAG.reg & ISRlist[i]) != 0)
     {
       // Call the callback function
-      ISRcallback[i]();
+      ISRcallback[i](i);
       // Clear the interrupt
       EIC->INTFLAG.reg = ISRlist[i];
     }
@@ -372,7 +374,7 @@ void EIC_Handler(void)
  */
 void NMI_Handler(void)
 {
-  if (ISRcallback[EXTERNAL_INT_NMI]) ISRcallback[EXTERNAL_INT_NMI]();
+  if (ISRcallback[EXTERNAL_INT_NMI]) ISRcallback[EXTERNAL_INT_NMI](0);
   EIC->NMIFLAG.bit.NMI = 1; // Clear interrupt
 }
 #endif
