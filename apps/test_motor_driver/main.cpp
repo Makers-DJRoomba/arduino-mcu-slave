@@ -49,7 +49,8 @@ int main( void )
 #endif
 
   //setup();
-  MotorDriver md = MotorDriver(9,10,11,12,7,8,0); // check these pins before testing 
+  //MotorDriver md = MotorDriver(9,10,11,12,7,8,0); // check these pins before testing 
+  MotorDriver md(11, 10, 9, 6, 12, 5, 100);
 
   for (;;)
   {
@@ -63,10 +64,6 @@ int main( void )
     md.driveMotorB(25);
 
     delay(1000);
-
-    yield(); // yield run usb background task
-
-    if (serialEventRun) serialEventRun();
   }
 
   return 0;

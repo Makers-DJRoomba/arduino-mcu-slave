@@ -70,6 +70,8 @@ int main( void )
 #endif
   
   Encoder encoder = Encoder(4);
+  MotorDriver md(11, 10, 9, 6, 12, 5, 100);
+
   Serial.begin(115200);
 
   vNopDelayMS(500); // prevents usb driver crash on startup, do not omit this
